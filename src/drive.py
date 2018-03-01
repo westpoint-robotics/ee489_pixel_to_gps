@@ -36,7 +36,7 @@ class GoForward():
 
 
         #TurtleBot will stop if we don't keep telling it to move.  How often should we tell it to move? 10 HZ
-        r = rospy.Rate(10);
+        r = rospy.Rate(60);
 
         # Twist is a datatype for velocity
         move_cmd = Twist()
@@ -59,21 +59,21 @@ class GoForward():
                 data.append('r')
                 current = 'r'
                 rospy.loginfo("right")
-                move_cmd.linear.x = 0.4
+                move_cmd.linear.x = 0
                 # turn at -1 radians/s
-                move_cmd.angular.z = -1
+                move_cmd.angular.z = -.4
             elif buttons[2] == 1:
                 data.append('l')
                 current = 'l'
                 rospy.loginfo("left")
-                move_cmd.linear.x = 0.4
+                move_cmd.linear.x = 0
                 # turn at 1 radians/s
-                move_cmd.angular.z = 1
+                move_cmd.angular.z = .4
             else:
                 data.append('s')
                 current = 's'
                 rospy.loginfo("Straight")
-                move_cmd.linear.x = 0.4
+                move_cmd.linear.x = 0.1
                 # let's turn at 0 radians/s
                 move_cmd.angular.z = 0
             if buttons[3] == 1:
@@ -90,6 +90,7 @@ class GoForward():
         print(data)
         # stop turtlebot
         rospy.loginfo("Stop TurtleBot")
+        self.drive_pub.publish("x")
         # a default Twist has linear.x of 0 and angular.z of 0.  So it'll stop TurtleBot
         self.cmd_vel.publish(Twist())
         # sleep just makes sure TurtleBot receives the stop command prior to shutting down the script

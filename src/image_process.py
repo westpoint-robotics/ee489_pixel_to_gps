@@ -15,12 +15,17 @@ num=0
 class image_converter:
 
   def __init__(self):
+    global num
+    while num==0:
+        num = input('num? >')
     self.image_pub = rospy.Publisher("/output/image_raw",Image)
 
     self.bridge = CvBridge()
     self.image_sub = rospy.Subscriber("/usb_cam/image_raw",Image,self.callback)
 
     self.drive_sub= rospy.Subscriber("/output/drive_out",String,self.callback1)
+
+
 
   def callback1(self,data):
     global current
@@ -55,7 +60,7 @@ class image_converter:
     cv2.waitKey(3)
     rospy.loginfo(current)
     try:
-      if current != 'x':
+      if str(current)[7] != 'x':
         global num
         num+=1
         self.image_pub.publish(self.bridge.cv2_to_imgmsg(gray_image, "mono8"))
@@ -73,6 +78,7 @@ def main(args):
     rospy.spin()
   except KeyboardInterrupt:
     print("Shutting down")
+    print("number last was "+num)
   cv2.destroyAllWindows()
 
 if __name__ == '__main__':
