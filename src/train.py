@@ -27,27 +27,19 @@ imgs,labels=next(train_batches)
 model = Sequential()
 model.add(Conv2D(32, kernel_size=(3, 3),
                  activation='relu',
-                 input_shape=(100,100,3)))
+                 input_shape=(100,100,1)))
 model.add(Conv2D(64, (3, 3), activation='relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Conv2D(128, (3, 3), activation='relu'))
-model.add(Conv2D(128, (3, 3), activation='relu'))
-model.add(Conv2D(128, (3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Conv2D(256, (3, 3), activation='relu'))
-model.add(Conv2D(256, (3, 3), activation='relu'))
-model.add(Conv2D(256, (3, 3), activation='relu'))
-model.add(Conv2D(256, (3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.25))
 model.add(Flatten())
-model.add(Dense(1600,activation='softmax'))
-model.add(Dense(800,activation='softmax'))
-model.add(Dense(3,activation='softmax'))
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(2, activation='softmax'))
 
 print(model.summary())
 
 model.compile(Adam(lr=.0001),loss='categorical_crossentropy', metrics=['accuracy'])
 
-model.fit_generator(train_batches,steps_per_epoch=100, validation_data = valid_batches, validation_steps=100, epochs=5, verbose=1)
+model.fit_generator(train_batches,steps_per_epoch=10, validation_data = valid_batches, validation_steps=10, epochs=5, verbose=1)
 
 model.save('latest.h5')

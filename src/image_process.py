@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 from __future__ import print_function
 
 import roslib
@@ -24,7 +24,7 @@ class image_converter:
     self.image_sub = rospy.Subscriber("/usb_cam/image_raw",Image,self.callback)
 
     self.drive_sub= rospy.Subscriber("/output/drive_out",String,self.callback1)
-
+    print("done.")
 
 
   def callback1(self,data):
@@ -49,13 +49,13 @@ class image_converter:
     lab = cv2.merge((l2,a,b))  # merge channels
     img2 = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
 
-    gray_image = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+    #gray_image = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
     #gray_image = cv2.cvtColor(img2, cv2.COLOR_GRAY2BGR)
 
-    cv2.namedWindow('image')
-    showimg = cv2.resize(gray_image, (500, 500))
-    cv2.resizeWindow('image', 600,600)
-    cv2.imshow('image', showimg)
+    #cv2.namedWindow('image')
+    #showimg = cv2.resize(img2, (500, 500))
+    #cv2.resizeWindow('image', 600,600)
+    #cv2.imshow('image', showimg)
 
     cv2.waitKey(3)
     rospy.loginfo(current)
@@ -63,8 +63,8 @@ class image_converter:
       if str(current)[7] != 'x':
         global num
         num+=1
-        self.image_pub.publish(self.bridge.cv2_to_imgmsg(gray_image, "mono8"))
-        pub_string = "img_"+str(num)+"_"+str(current)[7]+".png"
+        self.image_pub.publish(self.bridge.cv2_to_imgmsg(img2, "bgr8"))
+        pub_string = str(current)[7]+"/img_"+str(num)+"_"+str(current)[7]+".png"
         rospy.loginfo("Published image: "+pub_string)
         cv2.imwrite( pub_string , gray_image );
     except CvBridgeError as e:
