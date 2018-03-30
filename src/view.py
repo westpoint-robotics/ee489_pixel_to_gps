@@ -16,9 +16,6 @@ class image_converter:
 
   def __init__(self):
     global num
-    while num==0:
-        num = input('num? >')
-    self.image_pub = rospy.Publisher("/output/image_raw",Image)
 
     self.bridge = CvBridge()
     self.image_sub = rospy.Subscriber("/usb_cam/image_raw",Image,self.callback)
@@ -52,23 +49,14 @@ class image_converter:
     #gray_image = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
     #gray_image = cv2.cvtColor(img2, cv2.COLOR_GRAY2BGR)
 
-    #cv2.namedWindow('image')
-    #showimg = cv2.resize(img2, (500, 500))
-    #cv2.resizeWindow('image', 600,600)
-    #cv2.imshow('image', showimg)
+    cv2.namedWindow('image')
+    showimg = cv2.resize(img2, (500, 500))
+    cv2.resizeWindow('image', 600,600)
+    cv2.imshow('image', showimg)
 
     cv2.waitKey(3)
     rospy.loginfo(current)
-    try:
-      if str(current)[7] != 'x':
-        global num
-        num+=1
-        self.image_pub.publish(self.bridge.cv2_to_imgmsg(img2, "bgr8"))
-        pub_string = str(current)[7]+"/img_"+str(num)+"_"+str(current)[7]+".png"
-        rospy.loginfo("Published image: "+pub_string)
-        cv2.imwrite( pub_string , img2 );
-    except CvBridgeError as e:
-      print(e)
+
 
 def main(args):
   rospy.init_node('image_converter', anonymous=True)
