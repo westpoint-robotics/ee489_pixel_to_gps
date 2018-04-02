@@ -59,21 +59,21 @@ class GoForward():
                 data.append('r')
                 current = 'r'
                 rospy.loginfo("right")
-                move_cmd.linear.x = 0.1
+                move_cmd.linear.x = 0.2
                 # turn at -1 radians/s
                 move_cmd.angular.z = -.4
             elif buttons[2] == 1:
                 data.append('l')
                 current = 'l'
                 rospy.loginfo("left")
-                move_cmd.linear.x = 0.1
+                move_cmd.linear.x = 0.2
                 # turn at 1 radians/s
                 move_cmd.angular.z = .4
             else:
                 data.append('s')
                 current = 's'
                 rospy.loginfo("Straight")
-                move_cmd.linear.x = 0.1
+                move_cmd.linear.x = .3
                 # let's turn at 0 radians/s
                 move_cmd.angular.z = 0
             if buttons[3] == 1:

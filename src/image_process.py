@@ -63,7 +63,9 @@ class image_converter:
       if str(current)[7] != 'x':
         global num
         num+=1
-        self.image_pub.publish(self.bridge.cv2_to_imgmsg(img2, "bgr8"))
+
+        img3= cv2.resize(cv_image, (50, 50))
+        self.image_pub.publish(self.bridge.cv2_to_imgmsg(img3, "bgr8"))
         pub_string = str(current)[7]+"/img_"+str(num)+"_"+str(current)[7]+".png"
         rospy.loginfo("Published image: "+pub_string)
         cv2.imwrite( pub_string , img2 );
