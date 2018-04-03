@@ -58,7 +58,7 @@ class image_converter:
     #cv2.imshow('image', showimg)
 
     cv2.waitKey(3)
-    rospy.loginfo(current)
+    #rospy.loginfo(current)
     try:
       if str(current)[7] != 'x':
         global num
