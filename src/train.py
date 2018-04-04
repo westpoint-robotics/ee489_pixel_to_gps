@@ -40,7 +40,7 @@ test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(1
 
 imgs,labels=next(train_batches)
 
-plot(imgs, titles=labels)
+plots(imgs, titles=labels)
 
 model = Sequential()
 model.add(Conv2D(32, kernel_size=(3, 3),
