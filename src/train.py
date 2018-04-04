@@ -16,7 +16,7 @@ import itertools
 import matplotlib.pyplot as plt
 
 #plots images w/ labels
-def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None)
+def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None):
     if type(ims[0]) is np.ndarray:
         ims = np.array(ims).astype(np.uint8)
         if (ims.shape[-1] !=3):
