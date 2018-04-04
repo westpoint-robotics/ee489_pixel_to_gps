@@ -34,13 +34,14 @@ train_path = 'set/train'
 valid_path = 'set/valid'
 test_path = 'set/test'
 
-train_batches = ImageDataGenerator().flow_from_directory(train_path,target_size=(100,100), classes=['s','l','r'], batch_size=100)
-valid_batches = ImageDataGenerator().flow_from_directory(valid_path,target_size=(100,100), classes=['s','l','r'], batch_size=50)
-test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(100,100), classes=['s','l','r'], batch_size=50)
+train_batches = ImageDataGenerator().flow_from_directory(train_path,target_size=(100,100), classes=['l','s','r'], batch_size=10)
+valid_batches = ImageDataGenerator().flow_from_directory(valid_path,target_size=(100,100), classes=['l','s','r'], batch_size=5)
+test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(100,100), classes=['l','s','r'], batch_size=5)
 
 imgs,labels=next(train_batches)
 
 plots(imgs, titles=labels)
+plt.show()
 
 model = Sequential()
 model.add(Conv2D(32, kernel_size=(3, 3),
