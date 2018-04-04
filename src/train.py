@@ -65,17 +65,17 @@ for layer in vgg16_model.layers:
     model.add(layer)
 
 model.layers.pop()
-print(model.summary())
 
-for layer in models.layers:
+
+for layer in model.layers:
     layer.trainable = False
 
 model.add(Dense(3, activation='softmax'))
-
+print(model.summary())
 
 
 model.compile(Adam(lr=.0001),loss='categorical_crossentropy', metrics=['accuracy'])
 
-model.fit_generator(train_batches,steps_per_epoch=300, validation_data = valid_batches, validation_steps=50, epochs=5, verbose=1)
+model.fit_generator(train_batches,steps_per_epoch=1000, validation_data = valid_batches, validation_steps=150, epochs=5, verbose=1)
 
 model.save('latest.h5')
