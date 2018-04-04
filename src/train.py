@@ -34,31 +34,48 @@ train_path = 'set/train'
 valid_path = 'set/valid'
 test_path = 'set/test'
 
-train_batches = ImageDataGenerator().flow_from_directory(train_path,target_size=(100,100), classes=['l','s','r'], batch_size=10)
-valid_batches = ImageDataGenerator().flow_from_directory(valid_path,target_size=(100,100), classes=['l','s','r'], batch_size=5)
-test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(100,100), classes=['l','s','r'], batch_size=5)
+train_batches = ImageDataGenerator().flow_from_directory(train_path,target_size=(224,224), classes=['l','s','r'], batch_size=10)
+valid_batches = ImageDataGenerator().flow_from_directory(valid_path,target_size=(224,224), classes=['l','s','r'], batch_size=5)
+test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(224,224), classes=['l','s','r'], batch_size=5)
 
 imgs,labels=next(train_batches)
 
 plots(imgs, titles=labels)
 plt.show()
 
-model = Sequential()
-model.add(Conv2D(32, kernel_size=(3, 3),
-                 activation='relu',
-                 input_shape=(100,100,1)))
-model.add(Conv2D(64, (3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
-model.add(Flatten())
-model.add(Dense(128, activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(2, activation='softmax'))
+if False:
+    model = Sequential()
+    model.add(Conv2D(32, kernel_size=(3, 3),
+                     activation='relu',
+                     input_shape=(100,100,3)))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.25))
+    model.add(Flatten())
+    model.add(Dense(128, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(2, activation='softmax'))
 
+vgg16_model = keras.applications.vgg16.VGG16()
+
+#print(vgg16_model.summary())
+
+model = Sequential()
+for layer in vgg16_model.layers:
+    model.add(layer)
+
+model.layers.pop()
 print(model.summary())
+
+for layer in models.layers:
+    layer.trainable = False
+
+model.add(Dense(3, activation='softmax'))
+
+
 
 model.compile(Adam(lr=.0001),loss='categorical_crossentropy', metrics=['accuracy'])
 
-model.fit_generator(train_batches,steps_per_epoch=10, validation_data = valid_batches, validation_steps=10, epochs=5, verbose=1)
+model.fit_generator(train_batches,steps_per_epoch=300, validation_data = valid_batches, validation_steps=50, epochs=5, verbose=1)
 
 model.save('latest.h5')
