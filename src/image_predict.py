@@ -1,4 +1,4 @@
-#!/home/rrc/anaconda3/bin/python3.6
+#!/home/wborn/anaconda3/bin/python3.6
 import numpy as np
 import keras
 from keras import backend as K
@@ -14,6 +14,9 @@ from matplotlib import pyplot as plt
 from sklearn.metrics import confusion_matrix
 import itertools
 import matplotlib.pyplot as plt
+from keras.models import load_model
+
+test_path = 'set/test'
 
 #plots images w/ labels
 def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None):
@@ -32,7 +35,7 @@ def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None):
 
 test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(224,224), classes=['l','s','r'], batch_size=5)
 
-imgs,labels=next(train_batches)
+imgs,labels=next(test_batches)
 
 plots(imgs, titles=labels)
 plt.show()

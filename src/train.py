@@ -1,4 +1,4 @@
-#!/home/rrc/anaconda3/bin/python3.6
+#!/home/wborn/anaconda3/bin/python3.6
 import numpy as np
 import keras
 from keras import backend as K
