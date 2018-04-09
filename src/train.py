@@ -1,4 +1,4 @@
-#!/home/wborn/anaconda3/bin/python3.6
+#!/home/rrc/anaconda3/bin/python3.6
 import numpy as np
 import keras
 from keras import backend as K
@@ -34,9 +34,9 @@ train_path = 'set/train'
 valid_path = 'set/valid'
 test_path = 'set/test'
 
-train_batches = ImageDataGenerator().flow_from_directory(train_path,target_size=(224,224), classes=['l','s','r'], batch_size=10)
-valid_batches = ImageDataGenerator().flow_from_directory(valid_path,target_size=(224,224), classes=['l','s','r'], batch_size=5)
-test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(224,224), classes=['l','s','r'], batch_size=5)
+train_batches = ImageDataGenerator().flow_from_directory(train_path,target_size=(224,224), classes=['l','s','r'], batch_size=100)
+valid_batches = ImageDataGenerator().flow_from_directory(valid_path,target_size=(224,224), classes=['l','s','r'], batch_size=50)
+test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(224,224), classes=['l','s','r'], batch_size=50)
 
 imgs,labels=next(train_batches)
 
@@ -74,8 +74,8 @@ model.add(Dense(3, activation='softmax'))
 print(model.summary())
 
 
-model.compile(Adam(lr=.0001),loss='categorical_crossentropy', metrics=['accuracy'])
+model.compile(Adam(lr=.001),loss='categorical_crossentropy', metrics=['accuracy'])
 
-model.fit_generator(train_batches,steps_per_epoch=1000, validation_data = valid_batches, validation_steps=150, epochs=5, verbose=1)
+model.fit_generator(train_batches,steps_per_epoch=100, validation_data = valid_batches, validation_steps=15, epochs=5, verbose=1)
 
-model.save('latest.h5')
+model.save_weights('latest.h5')

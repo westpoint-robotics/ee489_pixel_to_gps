@@ -1,4 +1,4 @@
-#!/home/wborn/anaconda3/bin/python3.6
+#!/home/rrc/anaconda3/bin/python3.6
 import numpy as np
 import keras
 from keras import backend as K
@@ -40,8 +40,31 @@ imgs,labels=next(test_batches)
 plots(imgs, titles=labels)
 plt.show()
 
-model = load_model("latest.h5")
-predictions= model.predict_generator(test_batches,steps=1,verbose=0)
+vgg16_model = keras.applications.vgg16.VGG16()
+
+#print(vgg16_model.summary())
+
+model = Sequential()
+for layer in vgg16_model.layers:
+    model.add(layer)
+
+model.layers.pop()
+
+
+for layer in model.layers:
+    layer.trainable = False
+
+model.add(Dense(3, activation='softmax'))
+print(model.summary())
+
+print("loading weights")
+model.load_weights("latest.h5")
+print("done.")
+test_sample = np.array(imgs)
+print("starting predictions")
+predictions= model.predict(test_sample,batch_size=5,verbose=1)
+print("done.")
+print(predictions)
 
 plots(imgs, titles=predictions)
 plt.show()
