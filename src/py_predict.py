@@ -1,4 +1,4 @@
-#!/home/wborn/anaconda3/bin/python3.6
+#!/usr/bin/python
 import numpy as np
 import keras
 from keras.models import Sequential
