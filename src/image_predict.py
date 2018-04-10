@@ -17,7 +17,7 @@ import itertools
 import matplotlib.pyplot as plt
 
 #plots images w/ labels
-def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None):
+def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None, labels=None):
     if type(ims[0]) is np.ndarray:
         ims = np.array(ims).astype(np.uint8)
         if (ims.shape[-1] !=3):
@@ -28,15 +28,24 @@ def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None):
         sp = f.add_subplot(rows,cols,i+1)
         sp.axis('Off')
         if titles is not None:
-            dt=""
-            if titles[i] == 0:
-                dt='left'
-            elif titles[i] == 1:
-                dt='straight'
-            elif titles[i] == 2:
-                dt='right'
+            if labels is not None:
+                dt="Net: "
+                if titles[i] == 0:
+                    dt+='left '
+                elif titles[i] == 1:
+                    dt+='straight '
+                elif titles[i] == 2:
+                    dt+='right '
+                dt+="Orig: "
+                if labels[i] == 0:
+                    dt+='left '
+                elif labels[i] == 1:
+                    dt+='straight '
+                elif labels[i] == 2:
+                    dt+='right '
 
-            sp.set_title(dt,fontsize=16)
+
+                sp.set_title(dt,fontsize=10)
         plt.imshow(ims[i],interpolation=None if interp else 'none')
 
 gui = input("gui? [0/1] >")
@@ -79,12 +88,22 @@ model.load_weights("model.h5")
 
 
 while True:
+    labels_print= []
+    for i in labels:
+        if i[0]==1:
+            labels_print.append(0)
+        elif i[1]==1:
+            labels_print.append(1)
+        elif i[2]==1:
+            labels_print.append(2)
     test_sample = np.array(imgs)
     print("starting predictions")
     predictions= model.predict_classes(test_sample,batch_size=5,verbose=2)
     print("done.")
     print(predictions)
+    print(labels_print)
 
-    plots(imgs, titles=predictions)
+    #if gui == 1:
+    plots(imgs, titles=predictions, labels=labels_print)
     plt.show()
     imgs,labels=next(test_batches)
