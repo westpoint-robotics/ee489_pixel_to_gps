@@ -50,13 +50,9 @@ def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None, labels=None):
 
 gui = input("gui? [0/1] >")
 
-train_path = 'set/train'
-valid_path = 'set/valid'
 test_path = 'set/test'
 
-train_batches = ImageDataGenerator().flow_from_directory(train_path,target_size=(100,100), classes=['l','s','r'], batch_size=100)
-valid_batches = ImageDataGenerator().flow_from_directory(valid_path,target_size=(100,100), classes=['l','s','r'], batch_size=50)
-test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(100,100), classes=['l','s','r'], batch_size=5)
+test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(50,50), classes=['l','s','r'], batch_size=5)
 
 imgs,labels=next(test_batches)
 
@@ -64,7 +60,7 @@ if gui==1:
     plots(imgs, titles=labels)
     plt.show()
 
-vgg16_model = keras.applications.vgg16.VGG16(include_top=False, input_shape=(100,100,3),classes=3,pooling='max')
+vgg16_model = keras.applications.vgg16.VGG16(include_top=False, input_shape=(50,50,3),classes=3,pooling='max')
 
 #print(vgg16_model.summary())
 
@@ -82,7 +78,7 @@ model.add(Dense(3, activation='softmax'))
 print(model.summary())
 
 
-model.compile(Adam(lr=.0001),loss='categorical_crossentropy', metrics=['accuracy'])
+model.compile(Adam(lr=.001),loss='categorical_crossentropy', metrics=['accuracy'])
 
 model.load_weights("model.h5")
 

@@ -6,7 +6,7 @@ from std_msgs.msg import String
 
 buttons = [0,0,0,0,0,0,0,0,0,0,0]
 
-data = []
+#data = []
 
 current='x'
 
@@ -49,28 +49,28 @@ class GoForward():
             rospy.Subscriber("joy", Joy, callback)
             rospy.loginfo(buttons[0])
             if buttons[0] == 1:
-                data.append('x')
+                #data.append('x')
                 current = 'x'
                 rospy.logcinfo("Stop")
                 move_cmd.linear.x = 0
                 # turn at 0 radians/s
                 move_cmd.angular.z = 0
             elif buttons[1] == 1:
-                data.append('r')
+                #data.append('r')
                 current = 'r'
                 rospy.loginfo("right")
-                move_cmd.linear.x = 0.1
+                move_cmd.linear.x = 0.3
                 # turn at -1 radians/s
-                move_cmd.angular.z = -.3
+                move_cmd.angular.z = -.5
             elif buttons[2] == 1:
-                data.append('l')
+                #data.append('l')
                 current = 'l'
                 rospy.loginfo("left")
-                move_cmd.linear.x = 0.1
+                move_cmd.linear.x = 0.3
                 # turn at 1 radians/s
-                move_cmd.angular.z = .3
+                move_cmd.angular.z = .5
             else:
-                data.append('s')
+                #data.append('s')
                 current = 's'
                 rospy.loginfo("Straight")
                 move_cmd.linear.x = .1
@@ -87,7 +87,7 @@ class GoForward():
 
 
     def shutdown(self):
-        print(data)
+        #print(data)
         # stop turtlebot
         rospy.loginfo("Stop TurtleBot")
         self.drive_pub.publish("x")

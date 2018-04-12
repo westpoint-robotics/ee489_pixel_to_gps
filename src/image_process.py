@@ -37,25 +37,7 @@ class image_converter:
     except CvBridgeError as e:
       print(e)
 
-    resized_image = cv2.resize(cv_image, (100, 100))
-
-    clahe = cv2.createCLAHE(clipLimit=3., tileGridSize=(8,8))
-
-    lab = cv2.cvtColor(resized_image, cv2.COLOR_BGR2LAB)  # convert from BGR to LAB color space
-    l, a, b = cv2.split(lab)  # split on 3 different channels
-
-    l2 = clahe.apply(l)  # apply CLAHE to the L-channel
-
-    lab = cv2.merge((l2,a,b))  # merge channels
-    img2 = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
-
-    #gray_image = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
-    #gray_image = cv2.cvtColor(img2, cv2.COLOR_GRAY2BGR)
-
-    #cv2.namedWindow('image')
-    #showimg = cv2.resize(img2, (500, 500))
-    #cv2.resizeWindow('image', 600,600)
-    #cv2.imshow('image', showimg)
+    resized_image = cv2.resize(cv_image, (50, 50))
 
     cv2.waitKey(3)
     #rospy.loginfo(current)
@@ -63,11 +45,11 @@ class image_converter:
       global num
       num+=1
 
-      img3= cv2.resize(cv_image, (35, 35))
-      self.image_pub.publish(self.bridge.cv2_to_imgmsg(img2, "bgr8"))
-      #pub_string = str(current)[7]+"/img_"+str(num)+"_"+str(current)[7]+".png"
-      #rospy.loginfo("Published image: "+pub_string)
-      #cv2.imwrite( pub_string , img2 );
+      self.image_pub.publish(self.bridge.cv2_to_imgmsg(resized_image, "bgr8"))
+      if str(current)[7] != 'x':
+          pub_string = str(current)[7]+"/img_"+str(num)+"_"+str(current)[7]+".png"
+          rospy.loginfo("Published image: "+pub_string)
+          cv2.imwrite( pub_string , img2 );
     except CvBridgeError as e:
       print(e)
 
