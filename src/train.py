@@ -32,13 +32,15 @@ def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None):
         plt.imshow(ims[i],interpolation=None if interp else 'none')
 
 gui = input("gui? [0/1] >")
+epochs= int(input("epochs? >"))
+learning_rate= float(input("learning_rate? >"))
 
 train_path = 'set/train'
 valid_path = 'set/valid'
 test_path = 'set/test'
 
-train_batches = ImageDataGenerator().flow_from_directory(train_path,target_size=(50,50), classes=['l','s','r'], batch_size=100)
-valid_batches = ImageDataGenerator().flow_from_directory(valid_path,target_size=(50,50), classes=['l','s','r'], batch_size=50)
+train_batches = ImageDataGenerator().flow_from_directory(train_path,target_size=(50,50), classes=['l','s','r'], batch_size=50)
+valid_batches = ImageDataGenerator().flow_from_directory(valid_path,target_size=(50,50), classes=['l','s','r'], batch_size=20)
 test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(50,50), classes=['l','s','r'], batch_size=5)
 
 imgs,labels=next(train_batches)
@@ -65,9 +67,9 @@ model.add(Dense(3, activation='softmax'))
 print(model.summary())
 
 
-model.compile(Adam(lr=.001),loss='categorical_crossentropy', metrics=['accuracy'])
+model.compile(Adam(lr=learning_rate),loss='categorical_crossentropy', metrics=['accuracy'])
 
-model.fit_generator(train_batches,steps_per_epoch=100, validation_data = valid_batches, validation_steps=15, epochs=1000, verbose=1)
+model.fit_generator(train_batches,steps_per_epoch=132, validation_data = valid_batches, validation_steps=90, epochs=epochs, verbose=1)
 
 # serialize model to JSON
 model_json = model.to_json()

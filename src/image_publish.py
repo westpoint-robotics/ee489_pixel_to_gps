@@ -25,7 +25,7 @@ class image_converter:
     except CvBridgeError as e:
       print(e)
 
-    resized_image = cv2.resize(cv_image, (100, 100))
+    resized_image = cv2.resize(cv_image, (50, 50))
 
     cv2.waitKey(3)
     #rospy.loginfo(current)
