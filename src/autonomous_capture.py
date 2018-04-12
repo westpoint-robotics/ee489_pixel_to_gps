@@ -53,7 +53,8 @@ def callback(data):
 rospy.init_node('ac', anonymous=True)
 drive_pub = rospy.Publisher("/output/drive_out",String)
 image_sub = rospy.Subscriber("/output/image_raw",Image,callback)
-while True:
+
+while not rospy.is_shutdown():
     print("starting predictions")
     predictions= model.predict_classes(image[None,:,:,:],batch_size=1)
     print("done.")
