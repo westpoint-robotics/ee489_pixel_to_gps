@@ -43,13 +43,14 @@ class image_converter:
     #rospy.loginfo(current)
     try:
       global num
-      num+=1
 
+      rospy.loginfo("Published image.")
       self.image_pub.publish(self.bridge.cv2_to_imgmsg(resized_image, "bgr8"))
       if str(current)[7] != 'x':
+          num+=1
           pub_string = str(current)[7]+"/img_"+str(num)+"_"+str(current)[7]+".png"
-          rospy.loginfo("Published image: "+pub_string)
-          cv2.imwrite( pub_string , img2 );
+          rospy.loginfo("Wrote image: "+pub_string)
+          cv2.imwrite( pub_string , resized_image );
     except CvBridgeError as e:
       print(e)
 
