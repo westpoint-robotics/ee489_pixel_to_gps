@@ -73,7 +73,7 @@ class GoForward():
                 #data.append('s')
                 current = 's'
                 rospy.loginfo("Straight")
-                move_cmd.linear.x = .1
+                move_cmd.linear.x = .3
                 # let's turn at 0 radians/s
                 move_cmd.angular.z = 0
             if buttons[3] == 1:
