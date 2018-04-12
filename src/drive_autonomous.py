@@ -11,22 +11,22 @@ data = []
 current='x'
 
 def callback(data):
-    global buttons
-    buttons = data.buttons
+    global move_cmd
+    global cmd_vel
     print (str(data)[7])
     if str(data)[7] == 's':
-        move_cmd.linear.x = .1
+        move_cmd.linear.x = .05
         move_cmd.angular.z = 0
     elif str(data)[7] == 'r':
-        move_cmd.linear.x = 0.1
+        move_cmd.linear.x = 0.05
         move_cmd.angular.z = -.3
     elif str(data)[7] == 'l':
-        move_cmd.linear.x = 0.1
+        move_cmd.linear.x = 0.05
         move_cmd.angular.z = .3
     else:
         move_cmd.linear.x = 0
         move_cmd.angular.z = 0
-    self.cmd_vel.publish(move_cmd)
+    cmd_vel.publish(move_cmd)
 
 class GoForward():
 
@@ -43,7 +43,8 @@ class GoForward():
 
         # Create a publisher which can "talk" to TurtleBot and tell it to move
         # Tip: You may need to change cmd_vel_mux/input/navi to /cmd_vel if you're not using TurtleBot2
-        self.cmd_vel = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
+        global cmd_vel
+        cmd_vel = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
 
 
 
@@ -52,6 +53,7 @@ class GoForward():
         r = rospy.Rate(60);
 
         # Twist is a datatype for velocity
+        global move_cmd
         move_cmd = Twist()
 
         global current
