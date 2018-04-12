@@ -30,9 +30,7 @@ class image_converter:
     cv2.waitKey(3)
     #rospy.loginfo(current)
     try:
-      if str(current)[7] != 'x':
         self.image_pub.publish(self.bridge.cv2_to_imgmsg(img3, "bgr8"))
-
     except CvBridgeError as e:
       print(e)
 
