@@ -18,7 +18,7 @@ from std_msgs.msg import String
 from sensor_msgs.msg import Image
 
 global image
-image = img=load_img("set/test/l/img_3527_l.png")
+image = img=load_img("set/train/s/img_5958_s.png")
 image = img_to_array(image)
 
 vgg16_model = keras.applications.vgg16.VGG16(include_top=False, input_shape=(100,100,3),classes=3,pooling='max')
