@@ -16,8 +16,9 @@ class image_converter:
 
   def __init__(self):
     global num
-    while num==0:
-        num = input('num? >')
+    while True:
+        trial_num = int(input('trial num? >'))
+        break
     self.image_pub = rospy.Publisher("/output/image_raw",Image)
 
     self.bridge = CvBridge()

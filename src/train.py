@@ -34,14 +34,17 @@ def plots(ims, figsize=(12,6), rows=1, interp=False, titles=None):
 gui = input("gui? [0/1] >")
 epochs= int(input("epochs? >"))
 learning_rate= float(input("learning_rate? >"))
+train_image_num= int(input("number of test images? >"))
+train_batch_size= int(input("test batch_size? >"))
+valid_image_num= int(input("number of validation images? >"))
+val_batch_size= int(input("valid batch_size? >"))
 
 train_path = 'set/train'
 valid_path = 'set/valid'
-test_path = 'set/test'
 
-train_batches = ImageDataGenerator().flow_from_directory(train_path,target_size=(50,50), classes=['l','s','r'], batch_size=50)
-valid_batches = ImageDataGenerator().flow_from_directory(valid_path,target_size=(50,50), classes=['l','s','r'], batch_size=20)
-test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(50,50), classes=['l','s','r'], batch_size=5)
+train_batches = ImageDataGenerator().flow_from_directory(train_path,target_size=(50,50), classes=['l','s','r'], batch_size=train_batch_size)
+valid_batches = ImageDataGenerator().flow_from_directory(valid_path,target_size=(50,50), classes=['l','s','r'], batch_size=val_batch_size)
+
 
 imgs,labels=next(train_batches)
 
@@ -69,7 +72,7 @@ print(model.summary())
 
 model.compile(Adam(lr=learning_rate),loss='categorical_crossentropy', metrics=['accuracy'])
 
-model.fit_generator(train_batches,steps_per_epoch=132, validation_data = valid_batches, validation_steps=90, epochs=epochs, verbose=1)
+model.fit_generator(train_batches,steps_per_epoch=int(train_image_num/train_batch_size), validation_data = valid_batches, validation_steps=int(valid_image_num/val_batch_size), epochs=epochs, verbose=1)
 
 # serialize model to JSON
 model_json = model.to_json()
