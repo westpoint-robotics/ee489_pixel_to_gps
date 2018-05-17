@@ -16,7 +16,7 @@ class image_converter:
 
   def __init__(self):
     global num
-    trial_num = rospy.get_param('trial_num')
+    trial_num = rospy.get_param('/trial_num')
     rospy.loginfo("Started trial number: "+str(trial_num))
     self.image_pub = rospy.Publisher("/output/image_raw",Image)
 
