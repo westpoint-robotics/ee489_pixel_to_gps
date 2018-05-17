@@ -41,12 +41,14 @@ class GoForward():
         # Twist is a datatype for velocity
         move_cmd = Twist()
 
+        rospy.Subscriber("/turtle_follow/joy", Joy, callback)
+
         global current
         # as long as you haven't ctrl + c keeping doing...
         while not rospy.is_shutdown():
             # let's go forward at 0.2 m/s
             # subscribe to joy nod
-            rospy.Subscriber("joy", Joy, callback)
+
             rospy.loginfo(buttons[0])
             if buttons[0] == 1:
                 #data.append('x')

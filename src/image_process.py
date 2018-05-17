@@ -18,12 +18,12 @@ class image_converter:
     global num
     trial_num = rospy.get_param('/trial_num')
     rospy.loginfo("Started trial number: "+str(trial_num))
-    self.image_pub = rospy.Publisher("/output/image_raw",Image)
+    self.image_pub = rospy.Publisher("/turtle_follow/output/image_raw",Image)
 
     self.bridge = CvBridge()
-    self.image_sub = rospy.Subscriber("/usb_cam/image_raw",Image,self.callback)
+    self.image_sub = rospy.Subscriber("/turtle_follow/usb_cam/image_raw",Image,self.callback)
 
-    self.drive_sub= rospy.Subscriber("/output/drive_out",String,self.callback1)
+    self.drive_sub= rospy.Subscriber("/turtle_follow/output/drive_out",String,self.callback1)
     print("done.")
 
 
