@@ -56,6 +56,7 @@ class image_converter:
 
 def main(args):
   rospy.init_node('image_converter', anonymous=True)
+  rospy.loginfo("Started image_process")
   ic = image_converter()
 
   try:
