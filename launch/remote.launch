@@ -2,7 +2,7 @@
 
   <group ns="turtle_follow">
     <node pkg="joy" name="joy_node" type="joy_node"/>
-    <node pkg="turtle_follow" name="image_view" type="image_process.py"/>
+    <node pkg="turtle_follow" name="image_view" type="view.py"/>
   </group>
 
 </launch>

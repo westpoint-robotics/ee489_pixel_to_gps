@@ -3,6 +3,9 @@
   <group ns="turtle_follow">
     <node pkg="usb_cam" name="usb_cam_node" type="usb_cam_node"/>
     <node pkg="turtle_follow" name="image_process" type="image_process.py"/>
+
   </group>
+
+  <param name="trial_num" value=0 unless="$(arg trial)" />
 
 </launch>
