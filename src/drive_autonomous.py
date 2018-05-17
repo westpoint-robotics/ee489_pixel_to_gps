@@ -15,13 +15,13 @@ def callback(data):
     global cmd_vel
     print (str(data)[7])
     if str(data)[7] == 's':
-        move_cmd.linear.x = .3
+        move_cmd.linear.x = .25
         move_cmd.angular.z = 0
     elif str(data)[7] == 'r':
-        move_cmd.linear.x = 0.3
+        move_cmd.linear.x = 0.25
         move_cmd.angular.z = -1
     elif str(data)[7] == 'l':
-        move_cmd.linear.x = 0.3
+        move_cmd.linear.x = 0.25
         move_cmd.angular.z = 1
     else:
         move_cmd.linear.x = 0
