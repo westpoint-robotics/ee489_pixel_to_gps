@@ -6,6 +6,6 @@
 
   </group>
 
-  <param name="trial_num" value=0 unless="$(arg trial)" />
+  <param name="trial_num" value="0" unless="$(arg trial)" />
 
 </launch>
