@@ -44,7 +44,7 @@ class GoForward():
         # Create a publisher which can "talk" to TurtleBot and tell it to move
         # Tip: You may need to change cmd_vel_mux/input/navi to /cmd_vel if you're not using TurtleBot2
         global cmd_vel
-        cmd_vel = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
+        cmd_vel = rospy.Publisher('/cmd_vel_mux/input/navi', Twist, queue_size=10)
 
 
 
