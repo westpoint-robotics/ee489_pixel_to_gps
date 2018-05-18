@@ -46,7 +46,7 @@ class image_converter:
     cv2.waitKey(3)
     #rospy.loginfo(current)
     try:
-      global num
+      global num, trial_num
 
       rospy.loginfo("Published image.")
       self.image_pub.publish(self.bridge.cv2_to_imgmsg(resized_image, "bgr8"))
