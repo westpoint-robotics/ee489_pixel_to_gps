@@ -52,7 +52,7 @@ class image_converter:
       self.image_pub.publish(self.bridge.cv2_to_imgmsg(resized_image, "bgr8"))
       if current != 'x':
           num+=1
-          pub_string = "/home/rrc/data/set/"+str(data_set)+"/"+str(current)+"/trial_"+str(trial_num)+"img_"+str(num)+"_"+str(current)+".png"
+          pub_string = "/home/rrc/data/set/"+str(data_set)+"/"+str(current)+"/trial_"+str(trial_num)+"_img_"+str(num)+"_"+str(current)+".png"
           rospy.loginfo("Wrote image:"+pub_string)
           cv2.imwrite( pub_string , resized_image );
     except CvBridgeError as e:
