@@ -35,7 +35,7 @@ class GoForward():
         if buttons[0] == 1:
             #data.append('x')
             current = 'x'
-            rospy.logcinfo("Stop")
+            rospy.loginfo("Stop")
             self.move_cmd.linear.x = 0
             # turn at 0 radians/s
             self.move_cmd.angular.z = 0

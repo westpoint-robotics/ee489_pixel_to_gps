@@ -20,7 +20,11 @@ global x,y
 global points
 global trial_num
 points = []
+global current
 
+def drive_callback(data):
+    global current
+    current=data.data
 
 def pose_callback(data):
     global x,y
@@ -33,11 +37,11 @@ def plot():
 
     global points
 
-    points.append([x,y])
-
-    pp.plot(x,y, 'bo')
-    pp.draw()
-    pp.pause(0.000001)
+    if current != 'x':
+        points.append([x,y])
+        pp.plot(x,y, 'bo')
+        pp.draw()
+        pp.pause(0.000001)
 
 
 
@@ -64,6 +68,7 @@ def init():
 
     rospy.on_shutdown(shutdown)
 
+    self.drive_sub= rospy.Subscriber("/turtle_follow/output/drive_out",String,drive_callback)
     rospy.Subscriber("/vrpn_client_node/RigidBody1/pose", PoseStamped, pose_callback)
     r = rospy.Rate(10)
     while not rospy.is_shutdown():

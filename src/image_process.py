@@ -33,7 +33,7 @@ class image_converter:
 
   def callback1(self,data):
     global current
-    current = data
+    current = data.data
 
   def callback(self,data):
     try:
@@ -50,10 +50,10 @@ class image_converter:
 
       rospy.loginfo("Published image.")
       self.image_pub.publish(self.bridge.cv2_to_imgmsg(resized_image, "bgr8"))
-      if str(current)[7] != 'x':
+      if current != 'x':
           num+=1
           pub_string = "/home/rrc/data/set/"+data_set+"/"+str(current)[7]+"/trial_"+trial_num+"img_"+str(num)+"_"+str(current)[7]+".png"
-          rospy.loginfo("Wrote image: "+pub_string)
+          rospy.loginfo("Wrote image:"+pub_string)
           cv2.imwrite( pub_string , resized_image );
     except CvBridgeError as e:
       print(e)
