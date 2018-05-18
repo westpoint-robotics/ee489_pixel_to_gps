@@ -11,12 +11,16 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 
 current="x"
+global num, trial_num, data_set
 num=0
+trial_num=0
+data_set="test"
 class image_converter:
 
   def __init__(self):
-    global num
+    global num, trial_num
     trial_num = rospy.get_param('/trial_num')
+    data_set = rospy.get_param('/data_set')
     rospy.loginfo("Started trial number: "+str(trial_num))
     self.image_pub = rospy.Publisher("/turtle_follow/output/image_raw",Image)
 
@@ -48,7 +52,7 @@ class image_converter:
       self.image_pub.publish(self.bridge.cv2_to_imgmsg(resized_image, "bgr8"))
       if str(current)[7] != 'x':
           num+=1
-          pub_string = str(current)[7]+"/img_"+str(num)+"_"+str(current)[7]+".png"
+          pub_string = "/home/rrc/data/set/"+data_set+"str(current)[7]+"/trial_"+trial_num+"img_"+str(num)+"_"+str(current)[7]+".png"
           rospy.loginfo("Wrote image: "+pub_string)
           cv2.imwrite( pub_string , resized_image );
     except CvBridgeError as e:

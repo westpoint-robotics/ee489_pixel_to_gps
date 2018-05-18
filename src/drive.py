@@ -4,18 +4,80 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy
 from std_msgs.msg import String
 
+global buttons, axes, state
 buttons = [0,0,0,0,0,0,0,0,0,0,0]
-
+axes = [0,0,0,0,0,0,0,0]
+state = 0;
 #data = []
 
 current='x'
 
+
 def callback(data):
-    global buttons
+    global buttons,axes
     buttons = data.buttons
+    axes = data.axes
 
 class GoForward():
 
+    def drive(self):
+        global state
+        if state==0:
+            self.free_drive()
+        elif state==1:
+            self.trials()
+
+    def trials(self):
+        # let's go forward at 0.2 m/s
+        # subscribe to joy nod
+
+        rospy.loginfo(buttons[0])
+        if buttons[0] == 1:
+            #data.append('x')
+            current = 'x'
+            rospy.logcinfo("Stop")
+            self.move_cmd.linear.x = 0
+            # turn at 0 radians/s
+            self.move_cmd.angular.z = 0
+        elif buttons[1] == 1:
+            #data.append('r')
+            current = 'r'
+            rospy.loginfo("right")
+            self.move_cmd.linear.x = 0.3
+            # turn at -1 radians/s
+            self.move_cmd.angular.z = -1.0
+        elif buttons[2] == 1:
+            #data.append('l')
+            current = 'l'
+            rospy.loginfo("left")
+            self.move_cmd.linear.x = 0.3
+            # turn at 1 radians/s
+            self.move_cmd.angular.z = 1.0
+        else:
+            #data.append('s')
+            current = 's'
+            rospy.loginfo("Straight")
+            self.move_cmd.linear.x = .3
+            # let's turn at 0 radians/s
+            self.move_cmd.angular.z = 0
+        if buttons[3] == 1:
+             state=0
+        # publish the velocity
+        self.cmd_vel.publish(self.move_cmd)
+        self.drive_pub.publish(current)
+        # wait for 0.1 seconds (10 HZ) and publish again
+
+
+    def free_drive(self):
+        global buttons,axes,state
+        current = 'x'
+        if buttons[3] == 1:
+             state=1
+        self.move_cmd.angular.z = axes[3] * 2
+        self.move_cmd.linear.x = axes[1] / 2.5
+
+        self.cmd_vel.publish(self.move_cmd)
+        self.drive_pub.publish(current)
 
     def __init__(self):
         # initiliaze
@@ -39,51 +101,14 @@ class GoForward():
         r = rospy.Rate(60);
 
         # Twist is a datatype for velocity
-        move_cmd = Twist()
+        self.move_cmd = Twist()
 
         rospy.Subscriber("/turtle_follow/joy", Joy, callback)
 
         global current
         # as long as you haven't ctrl + c keeping doing...
         while not rospy.is_shutdown():
-            # let's go forward at 0.2 m/s
-            # subscribe to joy nod
-
-            rospy.loginfo(buttons[0])
-            if buttons[0] == 1:
-                #data.append('x')
-                current = 'x'
-                rospy.logcinfo("Stop")
-                move_cmd.linear.x = 0
-                # turn at 0 radians/s
-                move_cmd.angular.z = 0
-            elif buttons[1] == 1:
-                #data.append('r')
-                current = 'r'
-                rospy.loginfo("right")
-                move_cmd.linear.x = 0.3
-                # turn at -1 radians/s
-                move_cmd.angular.z = -1.0
-            elif buttons[2] == 1:
-                #data.append('l')
-                current = 'l'
-                rospy.loginfo("left")
-                move_cmd.linear.x = 0.3
-                # turn at 1 radians/s
-                move_cmd.angular.z = 1.0
-            else:
-                #data.append('s')
-                current = 's'
-                rospy.loginfo("Straight")
-                move_cmd.linear.x = .3
-                # let's turn at 0 radians/s
-                move_cmd.angular.z = 0
-            if buttons[3] == 1:
-                 self.shutdown();
-            # publish the velocity
-            self.cmd_vel.publish(move_cmd)
-            self.drive_pub.publish(current)
-            # wait for 0.1 seconds (10 HZ) and publish again
+            self.drive()
             r.sleep()
 
 
