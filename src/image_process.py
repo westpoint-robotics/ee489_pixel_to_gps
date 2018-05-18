@@ -52,7 +52,7 @@ class image_converter:
       global num, trial_num
 
       rospy.loginfo("Published image.")
-      self.image_pub.publish(self.bridge.cv2_to_imgmsg(resized_image, "mono16"))
+      self.image_pub.publish(self.bridge.cv2_to_imgmsg(resized_image, "mono8"))
       if current != 'x':
           num+=1
           pub_string = "/home/rrc/data/set/"+str(data_set)+"/"+str(current)+"/trial_"+str(trial_num)+"_img_"+str(num)+"_"+str(current)+".png"

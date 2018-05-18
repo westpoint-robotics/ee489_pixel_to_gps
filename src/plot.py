@@ -13,6 +13,7 @@ This node was run remotely.
 
 import rospy, time, math
 from geometry_msgs.msg import PoseStamped
+from std_msgs.msg import String
 import numpy as np
 import matplotlib.pyplot as pp
 
@@ -21,6 +22,7 @@ global points
 global trial_num
 points = []
 global current
+current='x'
 
 def drive_callback(data):
     global current
@@ -33,7 +35,7 @@ def pose_callback(data):
 
 def plot():
     #rotary code here
-    global x, y
+    global x, y, current
 
     global points
 
@@ -68,7 +70,7 @@ def init():
 
     rospy.on_shutdown(shutdown)
 
-    self.drive_sub= rospy.Subscriber("/turtle_follow/output/drive_out",String,drive_callback)
+    rospy.Subscriber("/turtle_follow/output/drive_out",String,drive_callback)
     rospy.Subscriber("/vrpn_client_node/RigidBody1/pose", PoseStamped, pose_callback)
     r = rospy.Rate(10)
     while not rospy.is_shutdown():
