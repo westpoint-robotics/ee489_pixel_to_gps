@@ -41,7 +41,10 @@ class image_converter:
     except CvBridgeError as e:
       print(e)
 
-    resized_image = cv2.resize(cv_image, (50, 50))
+    gray_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
+    resized_image = cv2.resize(gray_image, (100, 100))
+    resized_image = resized_image[50:100, 0:100]
+    resized_image = cv2.resize(resized_image, (50, 50))
 
     cv2.waitKey(3)
     #rospy.loginfo(current)
@@ -49,7 +52,7 @@ class image_converter:
       global num, trial_num
 
       rospy.loginfo("Published image.")
-      self.image_pub.publish(self.bridge.cv2_to_imgmsg(resized_image, "bgr8"))
+      self.image_pub.publish(self.bridge.cv2_to_imgmsg(resized_image, "mono16"))
       if current != 'x':
           num+=1
           pub_string = "/home/rrc/data/set/"+str(data_set)+"/"+str(current)+"/trial_"+str(trial_num)+"_img_"+str(num)+"_"+str(current)+".png"
