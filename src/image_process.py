@@ -21,7 +21,7 @@ class image_converter:
     self.image_pub = rospy.Publisher("/turtle_follow/output/image_raw",Image)
 
     self.bridge = CvBridge()
-    self.image_sub = rospy.Subscriber("/turtle_follow/usb_cam/image_raw",Image,self.callback)
+    self.image_sub = rospy.Subscriber("/turtle_follow/usb_cam_node/image_raw",Image,self.callback)
 
     self.drive_sub= rospy.Subscriber("/turtle_follow/output/drive_out",String,self.callback1)
     print("done.")

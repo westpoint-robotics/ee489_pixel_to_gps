@@ -18,9 +18,9 @@ class image_converter:
     global num
 
     self.bridge = CvBridge()
-    self.image_sub = rospy.Subscriber("/output/image_raw",Image,self.callback)
+    self.image_sub = rospy.Subscriber("/turtle_follow/output/image_raw",Image,self.callback)
 
-    self.drive_sub= rospy.Subscriber("/output/drive_out",String,self.callback1)
+    self.drive_sub= rospy.Subscriber("/turtle_follow/output/drive_out",String,self.callback1)
     print("done.")
 
 
