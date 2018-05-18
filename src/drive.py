@@ -30,7 +30,7 @@ class GoForward():
     def trials(self):
         # let's go forward at 0.2 m/s
         # subscribe to joy nod
-
+        global state
         rospy.loginfo(buttons[0])
         if buttons[0] == 1:
             #data.append('x')
@@ -43,25 +43,30 @@ class GoForward():
             #data.append('r')
             current = 'r'
             rospy.loginfo("right")
-            self.move_cmd.linear.x = 0.3
+            self.move_cmd.linear.x = 0.15
             # turn at -1 radians/s
             self.move_cmd.angular.z = -1.0
         elif buttons[2] == 1:
             #data.append('l')
             current = 'l'
             rospy.loginfo("left")
-            self.move_cmd.linear.x = 0.3
+            self.move_cmd.linear.x = 0.15
             # turn at 1 radians/s
             self.move_cmd.angular.z = 1.0
+        elif buttons[3] == 1:
+             state=0
+             current = 'x'
+             rospy.loginfo("Stop")
+             self.move_cmd.linear.x = 0
+             # turn at 0 radians/s
+             self.move_cmd.angular.z = 0
         else:
             #data.append('s')
             current = 's'
             rospy.loginfo("Straight")
-            self.move_cmd.linear.x = .3
+            self.move_cmd.linear.x = .15
             # let's turn at 0 radians/s
             self.move_cmd.angular.z = 0
-        if buttons[3] == 1:
-             state=0
         # publish the velocity
         self.cmd_vel.publish(self.move_cmd)
         self.drive_pub.publish(current)
