@@ -18,7 +18,7 @@ data_set="test"
 class image_converter:
 
   def __init__(self):
-    global num, trial_num
+    global num, trial_num,data_set
     trial_num = rospy.get_param('/trial_num')
     data_set = rospy.get_param('/data_set')
     rospy.loginfo("Started trial number: "+str(trial_num))

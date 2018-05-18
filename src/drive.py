@@ -33,7 +33,7 @@ class GoForward():
         global state
         rospy.loginfo(buttons[0])
         if buttons[0] == 1:
-            #data.append('x')
+            state=0
             current = 'x'
             rospy.loginfo("Stop")
             self.move_cmd.linear.x = 0
