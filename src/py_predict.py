@@ -36,7 +36,7 @@ print(model.summary())
 
 model.compile(Adam(lr=.0001),loss='categorical_crossentropy', metrics=['accuracy'])
 
-model.load_weights("model.h5")
+model.load_weights("/home/rrc/model_trial/model.h5")
 
 print("starting predictions")
 predictions= model.predict_classes(x[None,:,:,:],batch_size=1,verbose=2)

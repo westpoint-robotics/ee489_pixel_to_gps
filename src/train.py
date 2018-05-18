@@ -93,7 +93,7 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
 gui = input("gui? [0/1] >")
 epochs= int(input("epochs? >"))
 learning_rate= float(input("learning_rate? >"))
-train_image_num= int(input("number of test images? >"))
+train_image_num= int(input("number of train images? >"))
 train_batch_size= int(input("test batch_size? >"))
 valid_image_num= int(input("number of validation images? >"))
 val_batch_size= int(input("valid batch_size? >"))

@@ -34,7 +34,7 @@ class GoForward():
     def __init__(self):
         # initiliaze
         rospy.init_node('GoForward', anonymous=False)
-        rospy.Subscriber("/output/drive_out", String, callback)
+        rospy.Subscriber("/turtle_follow/output/drive_out", String, callback)
         # tell user how to stop TurtleBot
         rospy.loginfo("To stop TurtleBot CTRL + C")
 

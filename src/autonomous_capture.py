@@ -18,7 +18,7 @@ from std_msgs.msg import String
 from sensor_msgs.msg import Image
 
 global image
-image = img=load_img("set/train/s/img_5958_s.png")
+image = img=load_img("/home/rrc/model_trial/image_test.png")
 image = img_to_array(image)
 
 vgg16_model = keras.applications.vgg16.VGG16(include_top=False, input_shape=(50,50,3),classes=3,pooling='max')
@@ -39,7 +39,7 @@ model.add(Dense(3, activation='softmax'))
 
 model.compile(Adam(lr=.0001),loss='categorical_crossentropy', metrics=['accuracy'])
 
-model.load_weights("model.h5")
+model.load_weights("/home/rrc/model_trial/model.h5")
 
 def callback(data):
   global image
