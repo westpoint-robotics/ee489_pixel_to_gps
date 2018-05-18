@@ -4,28 +4,41 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy
 from std_msgs.msg import String
 
-global buttons, axes, state
+global buttons, axes, state, auto
 buttons = [0,0,0,0,0,0,0,0,0,0,0]
 axes = [0,0,0,0,0,0,0,0]
 state = 0;
 #data = []
 
 current='x'
-
+auto='s'
 
 def callback(data):
     global buttons,axes
     buttons = data.buttons
     axes = data.axes
 
+def auto_callback(data):
+    global auto
+    auto = data.data
+
 class GoForward():
 
     def drive(self):
-        global state
+        global state,axes
+        if axes[7]==1.0:
+            state=0
+        elif axes[7]==-1.0:
+            state=2
+        elif axes[6]==1.0 or axes[6]==-1.0:
+            state=1
+
         if state==0:
             self.free_drive()
         elif state==1:
             self.trials()
+        elif state==2:
+            self.autonomous()
 
     def trials(self):
         # let's go forward at 0.2 m/s
@@ -83,6 +96,23 @@ class GoForward():
 
         self.cmd_vel.publish(self.move_cmd)
         self.drive_pub.publish(current)
+
+    def autonomous():
+        rospy.Subscriber("/turtle_follow/output/drive_out", String, auto_callback)
+        global auto
+        if auto == 's':
+            move_cmd.linear.x = 0.15
+            move_cmd.angular.z = 0
+        elif auto == 'r':
+            move_cmd.linear.x = 0.15
+            move_cmd.angular.z = -1
+        elif auto == 'l':
+            move_cmd.linear.x = 0.15
+            move_cmd.angular.z = 1
+        else:
+            move_cmd.linear.x = 0
+            move_cmd.angular.z = 0
+        cmd_vel.publish(move_cmd)
 
     def __init__(self):
         # initiliaze

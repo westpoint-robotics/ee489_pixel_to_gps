@@ -4,7 +4,6 @@
     <node pkg="usb_cam" name="usb_cam_node" type="usb_cam_node" output="log"/>
     <node pkg="turtle_follow" name="image_publish" type="image_publish.py" output="screen"/>
     <node pkg="turtle_follow" name="autonomous_capture" type="autonomous_capture.py" output="screen"/>
-    <node pkg="turtle_follow" name="drive_autonomous" type="drive_autonomous.py" output="screen"/>
   </group>
 
   <param name="trial_num" value="$(arg trial)" />
