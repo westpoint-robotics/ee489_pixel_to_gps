@@ -42,6 +42,7 @@ model.compile(Adam(lr=.0001),loss='categorical_crossentropy', metrics=['accuracy
 model.load_weights("/home/rrc/model_trial/model.h5")
 
 def callback(data):
+  rospy.loginfo("recieved image")
   global image
   try:
     cv_image = CvBridge().imgmsg_to_cv2(data, "bgr8")
@@ -55,9 +56,9 @@ drive_pub = rospy.Publisher("/output/drive_out",String)
 image_sub = rospy.Subscriber("/output/image_raw",Image,callback)
 
 while not rospy.is_shutdown():
-    print("starting predictions")
+    rospy.loginfo("starting predictions")
     predictions= model.predict_classes(image[None,:,:,:],batch_size=1)
-    print("done.")
+    rospy.loginfo("done.")
     print(predictions)
     if predictions[0]==0:
         drive_pub.publish("l")
