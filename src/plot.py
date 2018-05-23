@@ -23,10 +23,19 @@ global trial_num
 points = []
 global current
 current='x'
+global to_plot
+to_plot=False
 
 def drive_callback(data):
     global current
     current=data.data
+
+def plot_callback(data):
+    global to_plot
+    if data.data == 'true':
+        to_plot=True
+    else:
+        to_plot=False
 
 def pose_callback(data):
     global x,y
@@ -39,7 +48,7 @@ def plot():
 
     global points
 
-    if current != 'x':
+    if to_plot:
         points.append([x,y])
         pp.plot(x,y, 'bo')
         pp.draw()
@@ -54,7 +63,7 @@ def shutdown():
     write= ""
     for p in points:
         write+= str(p[0])+','+str(p[1])+";"
-    with open('/home/wborn/trials/trial_'+str(rospy.get_param('/trial_num')), 'wb') as fp:
+    with open('/home/wborn/auto_trials/trial_'+str(rospy.get_param('/trial_num')), 'wb') as fp:
         fp.write(write)
         fp.close()
     pass
@@ -71,6 +80,7 @@ def init():
     rospy.on_shutdown(shutdown)
 
     rospy.Subscriber("/turtle_follow/output/drive_out",String,drive_callback)
+    rospy.Subscriber("/turtle_follow/output/plot",String,plot_callback)
     rospy.Subscriber("/vrpn_client_node/RigidBody1/pose", PoseStamped, pose_callback)
     r = rospy.Rate(10)
     while not rospy.is_shutdown():

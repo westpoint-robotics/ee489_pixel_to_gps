@@ -41,6 +41,7 @@ class GoForward():
             self.autonomous()
 
     def trials(self):
+        self.plot_pub.publish('true')
         # let's go forward at 0.2 m/s
         # subscribe to joy nod
         global state
@@ -87,6 +88,7 @@ class GoForward():
 
 
     def free_drive(self):
+        self.plot_pub.publish('false')
         global buttons,axes,state
         current = 'x'
         if buttons[3] == 1:
@@ -95,29 +97,31 @@ class GoForward():
         self.move_cmd.linear.x = axes[1] / 2.5
 
         self.cmd_vel.publish(self.move_cmd)
-        self.drive_pub.publish(current)
+        self.drive_pub.publish('x')
 
-    def autonomous():
+    def autonomous(self):
+        self.plot_pub.publish('true')
         rospy.Subscriber("/turtle_follow/output/drive_out", String, auto_callback)
         global auto
         if auto == 's':
-            move_cmd.linear.x = 0.15
-            move_cmd.angular.z = 0
+            self.move_cmd.linear.x = 0.15
+            self.move_cmd.angular.z = 0
         elif auto == 'r':
-            move_cmd.linear.x = 0.15
-            move_cmd.angular.z = -1
+            self.move_cmd.linear.x = 0.15
+            self.move_cmd.angular.z = -1
         elif auto == 'l':
-            move_cmd.linear.x = 0.15
-            move_cmd.angular.z = 1
+            self.move_cmd.linear.x = 0.15
+            self.move_cmd.angular.z = 1
         else:
-            move_cmd.linear.x = 0
-            move_cmd.angular.z = 0
-        cmd_vel.publish(move_cmd)
+            self.move_cmd.linear.x = 0
+            self.move_cmd.angular.z = 0
+        self.cmd_vel.publish(self.move_cmd)
 
     def __init__(self):
         # initiliaze
         rospy.init_node('GoForward', anonymous=False)
         self.drive_pub = rospy.Publisher("/turtle_follow/output/drive_out",String)
+        self.plot_pub = rospy.Publisher("/turtle_follow/output/plot",String)
 
         # tell user how to stop TurtleBot
         rospy.loginfo("To stop TurtleBot CTRL + C")

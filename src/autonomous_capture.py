@@ -14,7 +14,7 @@ import roslib
 import sys
 import rospy
 import cv2
-from std_msgs.msg import String
+from std_msgs.msg import String, Float32
 from sensor_msgs.msg import Image
 
 global image
@@ -53,16 +53,19 @@ def callback(data):
 
 rospy.init_node('ac', anonymous=True)
 drive_pub = rospy.Publisher("/turtle_follow/output/drive_out",String)
+fuzzy_pub = rospy.Publisher("/turtle_follow/output/fuzzy",Float32)
 image_sub = rospy.Subscriber("/turtle_follow/output/image_raw",Image,callback)
 
 while not rospy.is_shutdown():
     rospy.loginfo("starting predictions")
-    predictions= model.predict_classes(image[None,:,:,:],batch_size=1)
+    bin_predictions= model.predict_classes(image[None,:,:,:],batch_size=1)
+    fuzzy_predictions= model.predict(image[None,:,:,:],batch_size=1)
     rospy.loginfo("done.")
-    print(predictions)
+    rospy.loginfo(bin_predictions)
     if predictions[0]==0:
         drive_pub.publish("l")
     elif predictions[0]==1:
         drive_pub.publish("s")
     elif predictions[0]==2:
         drive_pub.publish("r")
+    fuzzy_pub.publish(fuzzy_predictions[2]-fuzzy_predictions[0])
