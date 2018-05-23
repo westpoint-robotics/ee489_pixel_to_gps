@@ -58,6 +58,7 @@ image_sub = rospy.Subscriber("/turtle_follow/output/image_raw",Image,callback)
 
 while not rospy.is_shutdown():
     rospy.loginfo("starting predictions")
+    fuzzy_predictions=[0,0,0]
     bin_predictions= model.predict_classes(image[None,:,:,:],batch_size=1)
     fuzzy_predictions= model.predict(image[None,:,:,:],batch_size=1)
     rospy.loginfo("done.")
