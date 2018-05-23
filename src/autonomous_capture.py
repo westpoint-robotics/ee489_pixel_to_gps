@@ -69,4 +69,4 @@ while not rospy.is_shutdown():
         drive_pub.publish("s")
     elif bin_predictions[0]==2:
         drive_pub.publish("r")
-    fuzzy_pub.publish(fuzzy_predictions[2]-fuzzy_predictions[0])
+    fuzzy_pub.publish(fuzzy_predictions[0][2]-fuzzy_predictions[0][0])
