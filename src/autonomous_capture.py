@@ -62,10 +62,10 @@ while not rospy.is_shutdown():
     fuzzy_predictions= model.predict(image[None,:,:,:],batch_size=1)
     rospy.loginfo("done.")
     rospy.loginfo(bin_predictions)
-    if predictions[0]==0:
+    if bin_predictions[0]==0:
         drive_pub.publish("l")
-    elif predictions[0]==1:
+    elif bin_predictions[0]==1:
         drive_pub.publish("s")
-    elif predictions[0]==2:
+    elif bin_predictions[0]==2:
         drive_pub.publish("r")
     fuzzy_pub.publish(fuzzy_predictions[2]-fuzzy_predictions[0])
