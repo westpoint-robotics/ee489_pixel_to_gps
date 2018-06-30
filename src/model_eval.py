@@ -97,9 +97,7 @@ train_path = 'set/train'
 valid_path = 'set/valid'
 test_path = 'set/test'
 
-train_batches = ImageDataGenerator().flow_from_directory(train_path,target_size=(50,50), classes=['l','s','r'], batch_size=train_batch_size)
-valid_batches = ImageDataGenerator().flow_from_directory(valid_path,target_size=(50,50), classes=['l','s','r'], batch_size=val_batch_size)
-test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(50,50), classes=['l','s','r'], batch_size=test_batch_size)
+test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(50,50), classes=['l','s','r'], batch_size=100)
 
 test_imgs,test_labels=next(test_batches)
 
@@ -135,7 +133,7 @@ model.compile(Adam(lr=.001),loss='categorical_crossentropy', metrics=['accuracy'
 
 model.load_weights("model.h5")
 
-predictions = model1.predict_classes(test_imgs, batch_size=test_batch_size,verbose=1)
+predictions = model.predict_classes(test_imgs, batch_size=100,verbose=1)
 
 cm = confusion_matrix(test_labels,predictions)
 
