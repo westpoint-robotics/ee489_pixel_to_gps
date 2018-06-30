@@ -68,7 +68,7 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
     plt.imshow(cm,interpolation='nearest', cmap=cmap)
     plt.title(title)
     plt.colorbar()
-    tick_marks= np.arrange(len(classes))
+    tick_marks= np.arange(len(classes))
     plt.xticks(tick_marks, classes, rotation=45)
     plt.yticks(tick_marks, classes)
 
@@ -90,26 +90,17 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
 
     plt.show()
 
-gui = input("gui? [0/1] >")
+gui = 1
 
 
 train_path = 'set/train'
 valid_path = 'set/valid'
-test_path = 'set/test'
+test_path = 'set/train'
 
-test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(50,50), classes=['l','s','r'], batch_size=100)
+test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(50,50), classes=['l','s','r'], batch_size=1000)
 
 test_imgs,test_labels=next(test_batches)
 
-itest_path = 'set/test'
-
-test_batches = ImageDataGenerator().flow_from_directory(test_path,target_size=(50,50), classes=['l','s','r'], batch_size=5)
-
-imgs,labels=next(test_batches)
-
-if gui==1:
-    plots(imgs, titles=labels)
-    plt.show()
 
 vgg16_model = keras.applications.vgg16.VGG16(include_top=False, input_shape=(50,50,3),classes=3,pooling='max')
 
@@ -131,11 +122,23 @@ print(model.summary())
 
 model.compile(Adam(lr=.001),loss='categorical_crossentropy', metrics=['accuracy'])
 
-model.load_weights("model.h5")
+model.load_weights("model1.h5")
 
-predictions = model.predict_classes(test_imgs, batch_size=100,verbose=1)
+predictions = model.predict_classes(test_imgs, batch_size=1000,verbose=1)
 
-cm = confusion_matrix(test_labels,predictions)
+
+
+test_labels_fixed=[]
+for i in range(0,len(test_labels)):
+    if test_labels[i][0]==1:
+        test_labels_fixed.append(0)
+    elif test_labels[i][1]==1:
+        test_labels_fixed.append(1)
+    elif test_labels[i][2]==1:
+        test_labels_fixed.append(2)
+#print(test_labels_fixed)
+#print(predictions)
+cm = confusion_matrix(test_labels_fixed,predictions)
 
 cm_plot_labels = ['left', 'straight', 'right']
 plot_confusion_matrix(cm,cm_plot_labels,title='Model Confusion Matrix')
