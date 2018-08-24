@@ -15,21 +15,21 @@ Istructions for connecting remote computers to the GVR-Bot
     + See instructor for the password for the user account on the GVR-Bot.
     + Once logged onto the GVR-Bot computer, check its bashrc file by typing the following in the command line:  `sudo nano ~/.bashrc` 
     + Add the two following lines at the bottom of the bashrc file if they aren't already present:
-        + `ROS_MASTER_URI=http://192.168.0.101:11311`
-        + `ROS_HOSTNAME=192.168.0.101`
+        + `export ROS_MASTER_URI=http://192.168.0.101:11311`
+        + `export ROS_HOSTNAME=192.168.0.101`
     + If changes were made to the bashrc, exit nano and save changes by typing ctrl+x.
 5.  Ensure the external Linux computer is configured to point to the ROS MASTER so that they can communication.
     + On your Linux computer, check its bashrc file:  `sudo nano ~/.bashrc`
     + Add the two following lines at the bottom of the bashrc file if they aren't already present:
-        + `ROS_MASTER_URI=http://192.168.0.101:11311`
-        + `ROS_HOSTNAME=IP_OF_PC` 
+        + `export ROS_MASTER_URI=http://192.168.0.101:11311`
+        + `export ROS_HOSTNAME=IP_OF_PC` 
             + where IP_OF_PC is the IP address of your Linux computer.  This is the IP address issued to the computer via DHCP by the GVR-Bot's router.  Check by your computer's IP by typing `ifconfig` in the command line.
     + If changes were made to the bashrc, exit nano and save changes by typing ctrl+x.
 6.  Test whether the computers are networked and able to pass ROS messages.
     + From your Linux computer, type `rostopic echo`.  You should see a listing of topics being published by the GVR-Bot.
     + Test whether your Linux computer can send ROS messages to the GVR-Bot
         + Publish a command velocity message to move the tracks by typing:  `rostopic pub -r 10 /cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'`\
-        + Stop publishing this command to stop the tracks by pressing cltr+c in the same terminal window.  
+        + Stop publishing this command to stop the tracks by pressing `cltr+c` in the same terminal window.  
     
    
             
