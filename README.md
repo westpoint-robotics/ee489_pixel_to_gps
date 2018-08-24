@@ -1,4 +1,4 @@
-# EE489 Automating the Mapping of Pixels to GPS Coordinates
+# EE489 - Automating the Mapping of Pixels to GPS Coordinates
 
 This repository contains files related to a project involving the use machine learning in the context of photogrammetry.  
 
