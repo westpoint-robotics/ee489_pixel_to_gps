@@ -1,23 +1,28 @@
+#https://thecodacus.com/opencv-object-tracking-colour-detection-python/#.W7ftmTB95D8
+
 import cv2
 import numpy as np
 
-lowerBound=np.array([33,80,40])
-upperBound=np.array([102,255,255])
+lowerBound=np.array([9,174,96]) #range of HSV values lower limit
+upperBound=np.array([26,255,255]) #range of HSV values upper limit
 
-cam= cv2.VideoCapture(0)
+cam= cv2.VideoCapture(0) # initializes camera object
 kernelOpen=np.ones((5,5))
 kernelClose=np.ones((20,20))
 
-font=cv2.cv.InitFont(cv2.cv.CV_FONT_HERSHEY_SIMPLEX,2,0.5,0,3,1)
+font=cv2.cv.InitFont(cv2.cv.CV_FONT_HERSHEY_SIMPLEX,2,0.5,0,3,1) #creates font for printed text
 
 while True:
-    ret, img=cam.read()
-    img=cv2.resize(img,(340,220))
+    ret, img=cam.read() #read a frame from the camera
+    img=cv2.resize(img,(340,220)) #resize it to make processing faster
 
     #convert BGR to HSV
-    imgHSV= cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+    imgHSV= cv2.cvtColor(img,cv2.COLOR_BGR2HSV) #convert image to HSV
+    #******RFI: STILL NOT SURE WHAT THIS MEANS*******
+    
     # create the Mask
-    mask=cv2.inRange(imgHSV,lowerBound,upperBound)
+    mask=cv2.inRange(imgHSV,lowerBound,upperBound) #creates a mask to cover all pixels not in the range
+    
     #morphology
     maskOpen=cv2.morphologyEx(mask,cv2.MORPH_OPEN,kernelOpen)
     maskClose=cv2.morphologyEx(maskOpen,cv2.MORPH_CLOSE,kernelClose)
