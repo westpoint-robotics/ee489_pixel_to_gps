@@ -1,0 +1,10 @@
+<launch>
+    
+
+	<node pkg="image_tracker" type="cam1_object_tracking.py" name="c1_pixelCoordinates" output="screen" >			
+	</node>
+	
+	<node pkg="image_tracker" type="cam2_object_tracking.py" name="c2_pixelCoordinates" output="screen" >			
+	</node>
+	
+</launch>
